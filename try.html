@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <img src="intrac.svg" alt="تحميل مهاد">
+    <p>جاري التحميل…</p>
+  </div>
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="logo.svg" alt="شعار مهاد">
+  </div>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="#" onclick="goto('home')">الرئيسية</a>
+    <a href="#" onclick="goto('how')">كيف يعمل مهاد</a>
+    <a href="#" onclick="goto('about')">من نحن</a>
+    <a href="#" onclick="goto('stories')">قصص النجاح</a>
+
+    <a href="#" onclick="goto('login-ind')">تسجيل الدخول (فرد)</a>
+    <a href="#" onclick="goto('login-org')">تسجيل الدخول (مؤسسة)</a>
+  </nav>
+
+  <!-- Pages (مثال مختصر) -->
+  <section id="home" class="page active">
+    <div class="container">
+      <h2 class="title">مرحبًا بكم في مهاد</h2>
+      <p class="lead">مهاد منصة رسمية لتسهيل تبني الأطفال بطريقة آمنة وموثوقة.</p>
+    </div>
+  </section>
+
+  <section id="matching" class="page">
+    <div class="container">
+   
+      <p class="lead" style="margin-bottom:10px">
+        ارفع صور الأم والأب (بنسبة 4×6)، ثم اضغط «ابدأ المطابقة». 
+      </p>
+
+      <!-- Uploaders -->
+      <div class="uploader">
+        <div class="u-col">
+          <label for="mom">صورة الأم</label>
+          <input id="mom" type="file" accept="image/*">
+          <img id="momPreview" class="preview" alt="">
+        </div>
+        <div class="u-col">
+          <label for="dad">صورة الأب</label>
+          <input id="dad" type="file" accept="image/*">
+          <img id="dadPreview" class="preview" alt="">
+        </div>
+      </div>
+
+      <button class="match-btn" id="matchBtn">ابدأ المطابقة</button>
+
+      <!-- Results strip -->
+      <div id="results" style="display:none">
+        <h3 style="margin:12px 0 6px">الأطفال المرشّحون</h3>
+        <div id="childStrip" class="child-strip"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="login-ind" class="page">
+    <div class="container">
+      <h2 class="title">تسجيل الدخول – فرد</h2>
+      <p class="lead">يمكنك تسجيل الدخول باستخدام الهوية الوطنية عبر نفاذ الوطني الموحد.</p>
+      <div style="max-width:420px;background:#fff;padding:20px;border-radius:16px;box-shadow:6px 6px 16px var(--shadow), -4px -4px 12px rgba(255,255,255,.35)">
+        <label>رقم الهوية الوطنية</label>
+        <input type="text" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:10px" placeholder="مثال: 1012345678">
+        <button class="match-btn" style="width:100%;margin-top:12px">تسجيل الدخول</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© جميع الحقوق محفوظة لمهاد</div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="childModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="mName" style="margin:0"></h3>
+        <button class="close" onclick="closeModal()" aria-label="Close">&times;</button>
+      </div>
+      <img id="mImg" alt="">
+      <div class="meta" id="mMeta"></div>
+    </div>
+  </div>
+
+  <script>
+    const children = [
+      { name:"طفل تقريبي (AI)", age:"-", percent:"–", image:"ai_child.jpg", info:"هذا الطفل تم توليده بالذكاء الاصطناعي لتقريب ملامح الوالدين." },
+      { name:"نورة",  age:"7 سنوات",  percent:99, image:"child_noura.jpg",  info:"هادئة، محبة للفنون والقصص المصوّرة." },
+      { name:"أحمد",  age:"3 سنوات",  percent:50, image:"child_ahmad.jpg",  info:"نشيط ومرح، يحب الألعاب التركيبية." },
+      { name:"ليلى",  age:"سنتان",    percent:78, image:"child_laila.jpg",  info:"مرحة وذكية، تستجيب بسلاسة للتوجيه." },
+      { name:"يوسف",  age:"6 سنوات",  percent:65, image:"child_yousef.jpg", info:"اجتماعي ولطيف، يحب الرسم والموسيقى." }
+    ];
+
+    const pages = document.querySelectorAll('.page');
+    const loader = document.getElementById('loader');
+
+    function goto(id){
+      loader.style.display='flex';
+      pages.forEach(p=>p.classList.remove('active'));
+      setTimeout(()=>{ document.getElementById(id).classList.add('active'); loader.style.display='none'; window.scrollTo({top:0,behavior:'smooth'}); },2000);
+    }
+
+    window.addEventListener('load', ()=>{ setTimeout(()=> loader.style.display='none', 2000); });
+
+    const mom = document.getElementById('mom');
+    const dad = document.getElementById('dad');
+    const momPreview = document.getElementById('momPreview');
+    const dadPreview = document.getElementById('dadPreview');
+
+    [ [mom,momPreview], [dad,dadPreview] ].forEach(([inp, img])=>{
+      if(!inp) return;
+      inp.addEventListener('change', e=>{ if(e.target.files && e.target.files[0]) img.src = URL.createObjectURL(e.target.files[0]); });
+    });
+
+    const matchBtn   = document.getElementById('matchBtn');
+    const resultsBox = document.getElementById('results');
+    const strip      = document.getElementById('childStrip');
+
+    if(matchBtn){
+      matchBtn.addEventListener('click', ()=>{
+        if(!mom.files.length || !dad.files.length){ alert("فضلًا ارفع صور الأم والأب أولًا."); return; }
+        loader.style.display='flex';
+        setTimeout(()=>{
+          loader.style.display='none';
+          renderChildren();
+          resultsBox.style.display='block';
+          resultsBox.scrollIntoView({behavior:'smooth'});
+        },2000);
+      });
+    }
+
+    function renderChildren(){
+      strip.innerHTML='';
+      children.forEach(ch=>{
+        const card = document.createElement('div');
+        card.className='child-card';
+        card.innerHTML = `<img class="child-img" src="${ch.image}" alt="${ch.name}"><div class="hover-info"><p>${ch.name} — ${ch.percent}%</p></div>`;
+        card.addEventListener('click', ()=> openModal(ch));
+        strip.appendChild(card);
+      });
+    }
+
+    const modal = document.getElementById('childModal');
+    const mName = document.getElementById('mName');
+    const mImg  = document.getElementById('mImg');
+    const mMeta = document.getElementById('mMeta');
+
+    function openModal(ch){
+      mName.textContent = ch.name;
+      mImg.src = ch.image;
+      mMeta.textContent = `العمر: ${ch.age} — نسبة التطابق: ${ch.percent}%. ${ch.info}`;
+      modal.style.display='flex';
+    }
+    function closeModal(){ modal.style.display='none' }
+    modal.addEventListener('click', e=>{ if(e.target===modal) closeModal() });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal() });
+  </script>
+
+</body>
+</html>

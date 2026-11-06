@@ -1,0 +1,119 @@
+<!-- ========== HEADER موحد لموقع مهاد ========== -->
+<header>
+  <!-- اللوقو -->
+  <div class="logo">
+    <a href="index.html">
+      <img src="logo.svg" alt="شعار مهاد">
+    </a>
+  </div>
+
+  <!-- الشريط العلوي الموحد -->
+  <nav id="mainNav">
+    <a href="index.html">الرئيسية</a>
+    <a href="how.html">كيف يعمل مهاد</a>
+    <a href="about.html">من نحن</a>
+    <a href="community.html">المجتمع</a>
+    <a href="stories.html">قصص الاحتضان</a>
+    <a href="children.html">الأطفال المسجلون</a>
+    <a href="matching.html">المطابقة</a>
+    <a href="management.html">إدارة النظام</a>
+    <a href="admin.html">لوحة المؤسسة</a>
+  </nav>
+</header>
+
+<style>
+  /* اللوجو */
+  .logo {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 40px;
+    background: none;
+    position: relative;
+    margin: 0;
+  }
+
+  .logo a {
+    display: block;
+  }
+
+  .logo img {
+    height: 85px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .logo img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  /* الشريط العلوي الموحد */
+  nav {
+    background: linear-gradient(145deg, #ffca94, #fbd4ae);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    margin-top: 0;
+  }
+
+  nav a {
+    color: #492108;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #fff3e2, #ffe4c1);
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.4);
+    transition: all 0.25s ease;
+  }
+
+  nav a:hover,
+  nav a.active {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.25);
+    background: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    nav a {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .logo img {
+      height: 70px;
+    }
+  }
+</style>
+
+<script>
+  // تحديد الصفحة النشطة
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('#mainNav a');
+    
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>

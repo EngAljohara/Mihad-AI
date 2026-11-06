@@ -1,0 +1,175 @@
+<footer dir="rtl">
+  <div class="footer-container">
+
+    <!-- عن مهاد -->
+    <div class="footer-section">
+      <h3>عن مهاد</h3>
+      <p>
+        منصة وطنية ذكية تُعنى بتسهيل عمليات الاحتضان الآمن، 
+        عبر حلول تقنية متقدمة تعتمد على الذكاء الاصطناعي لمطابقة الملامح 
+        وضمان أعلى درجات الموثوقية.
+      </p>
+    </div>
+
+    <!-- روابط مهمة -->
+    <div class="footer-section">
+      <h3>روابط مهمة</h3>
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>سياسة الاستخدام</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>
+              يلتزم المستخدم باستخدام منصة مهاد للأغراض الرسمية فقط، 
+              ويحظر مشاركة أي بيانات حساسة دون إذن الجهة المختصة.
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>المتابعة القانونية</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>
+              جميع الطلبات والمعاملات تخضع لأنظمة وزارة الموارد البشرية والتنمية الاجتماعية، 
+              ويجوز مراجعتها أو رفضها وفق الأنظمة المعتمدة.
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>تقييم الخدمة</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>
+              يمكن للمستخدمين تقييم تجربتهم مع المنصة لتحسين جودة الخدمة 
+              عبر استبيان رسمي مخصص لذلك.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- المساعدة والدعم -->
+    <div class="footer-section">
+      <h3>المساعدة والدعم</h3>
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>الأسئلة الشائعة</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>قسم مخصص لأكثر الأسئلة شيوعًا حول آلية الاحتضان واستخدام المنصة.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>مجتمعات مهاد</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>مجتمع داعم يجمع الأسر المحتضنة لتبادل الخبرات والقصص الملهمة.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span>تواصل معنا</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <p>
+              <strong>📧</strong> <a href="mailto:MihadHRSD.sa@gmail.com">MihadHRSD.sa@gmail.com</a><br>
+              <strong>📞</strong> <a href="tel:+966567009818">+966567009818</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- شارك قصتك -->
+    <div class="footer-section">
+      <h3>شارك قصتك</h3>
+      <p>
+        نؤمن أن كل قصة احتضان هي حكاية تلهم غيرها.  
+        شارك تجربتك مع مهاد، ودعها تكون بداية لأمل جديد.
+      </p>
+      <a href="share-story.html" class="share-btn">
+        <i class="fa-solid fa-pen-nib"></i> أرسل قصتك الآن
+      </a>
+    </div>
+
+  </div>
+
+  <hr class="footer-divider">
+
+    <p text-align: center;>© 2025 جميع الحقوق محفوظة لمهاد </p>
+  
+</footer>
+
+<script src="https://kit.fontawesome.com/4f7ce85877.js" crossorigin="anonymous"></script>
+<script>
+  // تفعيل الأكورديون
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      item.classList.toggle('active');
+    });
+  });
+</script>
+
+<style>
+  
+/* حركات الأكورديون */
+.accordion-item {
+  border-bottom: 1px solid #f1d3b8;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: #492108;
+  padding: 8px 0;
+}
+
+.accordion-header i {
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-header i {
+  transform: rotate(180deg);
+  color: #e65a3a;
+}
+
+.accordion-content {
+  display: none;
+  padding: 8px 0;
+  color: #492108;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+

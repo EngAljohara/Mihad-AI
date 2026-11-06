@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قصص الاحتضان - مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      color: #e65a3a;
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .page-header p {
+      color: #8b4a24;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* نموذج إضافة قصة */
+    .story-form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+
+    .story-form h3 {
+      color: #e65a3a;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #492108;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 15px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #e65a3a;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 180px;
+    }
+
+    .submit-btn {
+      background: #e65a3a;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .submit-btn:hover {
+      background: #c94b2f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    /* قسم القصص */
+    .stories-section {
+      display: grid;
+      gap: 30px;
+    }
+
+    .story-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border-right: 5px solid #e65a3a;
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .story-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #fffaf4;
+    }
+
+    .story-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #492108;
+      margin-bottom: 10px;
+    }
+
+    .story-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .story-author {
+      font-weight: 600;
+      color: #e65a3a;
+      font-size: 16px;
+    }
+
+    .story-date {
+      color: #8b4a24;
+      font-size: 14px;
+    }
+
+    .story-content {
+      color: #492108;
+      line-height: 1.9;
+      font-size: 17px;
+      text-align: justify;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8b4a24;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 10px;
+      margin-top: 40px;
+      background: #fffaf4;
+      border-top: 1px solid #f1d3b8;
+      font-size: 14px;
+      color: #492108;
+    }
+
+    @media (max-width: 768px) {
+      .story-card {
+        padding: 20px;
+      }
+      
+      .story-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- الهيدر -->
+  <div id="header"></div>
+
+  <!-- المحتوى -->
+  <div class="container">
+    <div class="page-header">
+      <h1>قصص الاحتضان</h1>
+      <p>شارك تجربتك الملهمة في رحلة الاحتضان</p>
+    </div>
+
+    <!-- نموذج إضافة قصة -->
+    <div class="story-form">
+      <h3>شارك قصتك</h3>
+      <form id="storyForm">
+        <div class="form-group">
+          <label>الاسم (يمكنك استخدام اسم مستعار)</label>
+          <input type="text" id="storyAuthor" required placeholder="اسمك أو اسم مستعار">
+        </div>
+
+        <div class="form-group">
+          <label>عنوان القصة</label>
+          <input type="text" id="storyTitle" required placeholder="عنوان معبر عن تجربتك">
+        </div>
+
+        <div class="form-group">
+          <label>قصتك</label>
+          <textarea id="storyContent" required placeholder="اكتب تجربتك مع الاحتضان... كيف كانت رحلتك؟ ما هي التحديات والنجاحات؟"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">نشر القصة</button>
+      </form>
+    </div>
+
+    <!-- قسم القصص -->
+    <div class="stories-section" id="storiesList">
+      <div class="empty-state">
+        <p>جاري تحميل القصص...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <div id="footer"></div>
+
+  <!-- تحميل الهيدر -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header").innerHTML = html;
+        const script = document.getElementById("header").querySelector("script");
+        if (script) eval(script.textContent);
+      });
+  </script>
+
+  <!-- تحميل الفوتر -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        const footerContainer = document.getElementById("footer");
+        footerContainer.innerHTML = data;
+        const scriptTags = footerContainer.querySelectorAll("script");
+        scriptTags.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // تحميل القصص
+    function loadStories() {
+      const storiesListEl = document.getElementById('storiesList');
+      
+      onValue(ref(db, "stories"), (snapshot) => {
+        const data = snapshot.val();
+        
+        if (!data) {
+          storiesListEl.innerHTML = `
+            <div class="empty-state">
+              <p>لا توجد قصص حتى الآن. كن أول من يشارك تجربته!</p>
+            </div>
+          `;
+          return;
+        }
+
+        const stories = Object.entries(data)
+          .map(([id, story]) => ({ id, ...story }))
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        storiesListEl.innerHTML = stories.map(story => `
+          <div class="story-card">
+            <div class="story-header">
+              <h3 class="story-title">${story.title}</h3>
+              <div class="story-meta">
+                <span class="story-author">${story.author}</span>
+                <span class="story-date">${new Date(story.createdAt).toLocaleDateString('ar-SA', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}</span>
+              </div>
+            </div>
+            <p class="story-content">${story.content}</p>
+          </div>
+        `).join('');
+      });
+    }
+
+    // إضافة قصة جديدة
+    document.getElementById('storyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const author = document.getElementById('storyAuthor').value.trim();
+      const title = document.getElementById('storyTitle').value.trim();
+      const content = document.getElementById('storyContent').value.trim();
+      
+      if (!author || !title || !content) {
+        alert('الرجاء إدخال جميع الحقول');
+        return;
+      }
+
+      try {
+        await push(ref(db, "stories"), {
+          author,
+          title,
+          content,
+          createdAt: new Date().toISOString()
+        });
+        
+        alert('تم نشر قصتك بنجاح');
+        document.getElementById('storyForm').reset();
+      } catch (error) {
+        alert('حدث خطأ: ' + error.message);
+      }
+    });
+
+    // قصص وهمية للعرض
+    const sampleStories = [
+      {
+        author: "أم عبدالله",
+        title: "رحلة الأمومة الجديدة",
+        content: "بعد سنوات من الانتظار، قررنا أنا وزوجي خوض تجربة الاحتضان. كانت البداية صعبة ومليئة بالتحديات، لكن منصة مهاد سهلت علينا الكثير. اليوم، وبعد عامين، أصبح عبدالله جزءاً لا يتجزأ من حياتنا. كل يوم معه هو هدية من الله. شكراً لكل من ساهم في هذا المشروع الإنساني الرائع.",
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "أبو نورة",
+        title: "أجمل قرار اتخذناه",
+        content: "الاحتضان لم يكن مجرد قرار، بل كان نداء قلب. عندما رأينا نورة لأول مرة، عرفنا أنها ابنتنا. النظام الذكي في مهاد ساعدنا في إيجاد التطابق المثالي. الآن نورة في الصف الثالث الابتدائي، متفوقة ومحبوبة من الجميع. الاحتضان أعطانا معنى جديد للحياة.",
+        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "سارة المطيري",
+        title: "قصة نجاح عائلتنا",
+        content: "كنت خائفة في البداية، هل سأستطيع أن أكون أماً جيدة؟ لكن الحب الذي شعرت به تجاه طفلي الجديد كان أقوى من كل المخاوف. مهاد لم توفر لنا فقط طفلاً، بل وفرت لنا دعماً ومتابعة مستمرة. اليوم، بعد ثلاث سنوات، أنا أسعد أم في العالم.",
+        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "عائلة الخالد",
+        title: "من قلوبنا لكم",
+        content: "أحمد، فهد، وسلطان - ثلاثة أطفال رائعين دخلوا حياتنا عبر مهاد. كل واحد منهم له قصته الخاصة، لكنهم جميعاً جزء من عائلتنا الآن. الاحتضان ليس فقط عن إعطاء بيت للطفل، بل عن بناء عائلة حقيقية. شكراً لمهاد على تسهيل هذه الرحلة المباركة.",
+        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "منى السالم",
+        title: "أفضل هدية من الحياة",
+        content: "بعد فقدان الأمل في الإنجاب، كان الاحتضان هو الحل. لم أتوقع أن أشعر بهذا الحب الكبير تجاه طفل ليس من رحمي. لكن اليوم أدركت أن الأمومة ليست عن الدم، بل عن القلب. لينا ابنتي، وأنا أمها بكل ما تعنيه الكلمة. مهاد، شكراً على هذه الهدية الثمينة.",
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+
+    // تحميل القصص
+    loadStories();
+  </script>
+</body>
+</html>

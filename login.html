@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مهاد | تسجيل الدخول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #fff3e7 0%, #ffe9d6 100%);
+      color: #492108;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      padding: 40px 35px 35px;
+      width: 100%;
+      max-width: 430px;
+      text-align: center;
+      transition: box-shadow 0.25s ease;
+    }
+    .login-container:hover {
+      box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+    }
+
+    .tab-buttons {
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f3e0cf;
+      margin-bottom: 25px;
+    }
+
+    .tab-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: #492108;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .tab-buttons button.active {
+      background: #e65a3a;
+      color: #fff;
+    }
+
+    h1 {
+      color: #e65a3a;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p.subtitle {
+      color: #7a5e42;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    input:focus {
+      border-color: #e65a3a;
+    }
+
+    button.submit {
+      background: #e65a3a;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      width: 100%;
+    }
+    button.submit:hover {
+      background: #c94b2f;
+    }
+
+    .links {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .links a {
+      color: #e65a3a;
+      text-decoration: none;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #7a5e42;
+    }
+    footer a {
+      color: #e65a3a;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="tab-buttons">
+      <button id="indBtn" class="active">الأفراد</button>
+      <button id="orgBtn">المؤسسات</button>
+    </div>
+
+    <!-- الأفراد -->
+    <div id="individualForm" class="form-section active">
+      <h1>تسجيل الدخول إلى مهاد</h1>
+      <p class="subtitle">مرحبًا بكم، الرجاء إدخال البيانات للمتابعة.</p>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <button class="submit" id="indLoginBtn">تسجيل الدخول</button>
+      <div class="links">
+        <a href="signup.html">إنشاء حساب جديد</a>
+      </div>
+    </div>
+
+    <!-- المؤسسات -->
+    <div id="organizationForm" class="form-section">
+      <h1>دخول المؤسسات</h1>
+      <p class="subtitle">يرجى تسجيل الدخول باستخدام البريد الرسمي للمؤسسة.</p>
+      <input type="email" id="email-org" placeholder="example@mihad.sa" required>
+      <input type="password" id="password-org" placeholder="كلمة المرور" required>
+      <button class="submit" id="orgLoginBtn">تسجيل الدخول</button>
+    </div>
+
+    <footer>
+      <p>© جميع الحقوق محفوظة لمهاد</p>
+      <a href="mailto:MihadHRSD.sa@gmail.com">MihadHRSD.sa@gmail.com</a> |
+      <a href="tel:+966567009818">+966567009818</a>
+    </footer>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const indBtn = document.getElementById("indBtn");
+    const orgBtn = document.getElementById("orgBtn");
+    const individualForm = document.getElementById("individualForm");
+    const organizationForm = document.getElementById("organizationForm");
+
+    // تبديل بين الأفراد والمؤسسات
+    indBtn.addEventListener("click", () => {
+      indBtn.classList.add("active");
+      orgBtn.classList.remove("active");
+      individualForm.classList.add("active");
+      organizationForm.classList.remove("active");
+    });
+
+    orgBtn.addEventListener("click", () => {
+      orgBtn.classList.add("active");
+      indBtn.classList.remove("active");
+      organizationForm.classList.add("active");
+      individualForm.classList.remove("active");
+    });
+
+    // تسجيل دخول الأفراد (Firebase)
+    document.getElementById("indLoginBtn")?.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (!email || !password) return alert("يرجى تعبئة البريد وكلمة المرور");
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("تسجيل فرد ناجح:", userCredential.user.email);
+        window.location.href = "matching.html";
+      } catch (err) {
+        if (err.code === "auth/user-not-found") {
+          alert("لا يوجد حساب بهذا البريد، سيتم تحويلك لتسجيل حساب جديد.");
+          window.location.href = "signup.html";
+        } else if (err.code === "auth/wrong-password") {
+          alert("كلمة المرور غير صحيحة.");
+        } else {
+          alert("حدث خطأ أثناء تسجيل الدخول: " + err.message);
+        }
+      }
+    });
+
+    // تسجيل دخول المؤسسات (يدوي)
+    document.getElementById("orgLoginBtn")?.addEventListener("click", () => {
+      const email = document.getElementById("email-org").value.trim().toLowerCase();
+      const password = document.getElementById("password-org").value.trim();
+      if (!email.includes("@mihad")) return alert("يرجى استخدام بريد رسمي يحتوي @mihad");
+      alert("Demo login is disabled in the public source. Configure Firebase Authentication and authorization before use."); return;
+      sessionStorage.setItem("orgAuthed", "1");
+      alert("تم تسجيل الدخول بنجاح");
+      window.location.href = "admin.html";
+    });
+  </script>
+</body>
+</html>

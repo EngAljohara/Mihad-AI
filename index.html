@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مهاد - الصفحة الرئيسية</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+      overflow-x: hidden;
+    }
+
+    /* شاشة التحميل */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #fffaf4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #loader img {
+      width: 120px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* الصفحة */
+    .page {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      display: none;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-box {
+      max-width: 850px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+      padding: 60px 40px;
+      line-height: 1.9;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #e65a3a;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 18px;
+      color: #492108;
+      margin-bottom: 20px;
+      line-height: 1.9;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- شاشة التحميل -->
+  <div id="loader">
+    <img src="intrac.svg" alt="جاري التحميل..." />
+  </div>
+
+  <!-- الهيدر -->
+  <div id="header"></div>
+
+  <!-- الصفحة الرئيسية -->
+  <div id="home" class="page active">
+    <div class="section-box">
+      <h1>مرحباً بكم في مهاد</h1>
+      <p>
+        منصة وطنية تسعى إلى تطوير تجربة الاحتضان في المملكة بأسلوب حديث وآمن.
+      </p>
+      <p>
+        يهدف مهاد إلى ربط الأطفال بالأسر المؤهلة بطريقة قائمة على الذكاء الاصطناعي،  
+        عبر تحليل ملامح الوجه وتحديد نسب التطابق لضمان توافق إنساني أقرب للواقع.
+      </p>
+      <p>
+        نؤمن أن التقنية عندما تصمم بعناية يمكن أن تصنع أثراً اجتماعياً عميقاً،  
+        وأن الخطوة الأولى نحو مستقبل أكثر إنسانية تبدأ من مهاد.
+      </p>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <div id="footer"></div>
+
+  <script src="https://kit.fontawesome.com/4f7ce85877.js" crossorigin="anonymous"></script>
+
+  <!-- تحميل الهيدر -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header").innerHTML = html;
+        const scripts = document.getElementById("header").querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- تحميل الفوتر -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        const footerContainer = document.getElementById("footer");
+        footerContainer.innerHTML = data;
+        const scriptTags = footerContainer.querySelectorAll("script");
+        scriptTags.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- التحكم في اللودر -->
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').style.display = 'none', 1500);
+    });
+  </script>
+</body>
+</html>

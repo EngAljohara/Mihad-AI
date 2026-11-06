@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نتائج المطابقة - مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #fffaf4;
+      color: #492108;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      padding: 30px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #e65a3a;
+      margin-bottom: 25px;
+    }
+
+    .top-child {
+      margin-bottom: 30px;
+    }
+
+    .top-child img {
+      width: 180px;
+      height: 180px;
+      border-radius: 15px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    .percent {
+      padding: 8px 16px;
+      border-radius: 10px;
+      display: inline-block;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .btn {
+      background: #e65a3a;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      margin: 8px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      background: #c94b2f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .others {
+      margin-top: 40px;
+    }
+
+    .others h3 {
+      color: #492108;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+
+    .child-card {
+      background: #fffaf4;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .child-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    }
+
+    .child-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .child-card h4 {
+      color: #492108;
+      margin: 8px 0;
+    }
+
+    .child-card .percent {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+
+    .child-card .btn {
+      font-size: 14px;
+      padding: 8px 16px;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: #fffaf4;
+      border-top: 1px solid #f1d3b8;
+      color: #492108;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #8b4a24;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- الهيدر -->
+  <div id="header"></div>
+
+  <div class="container">
+    <h2>نتائج المطابقة</h2>
+
+    <!-- أفضل طفل -->
+    <div class="top-child" id="topChild">
+      <div class="empty-state">
+        <p>جاري تحميل النتائج...</p>
+      </div>
+    </div>
+
+    <!-- باقي الأطفال -->
+    <div class="others">
+      <h3>نتائج أخرى</h3>
+      <div class="grid" id="otherChildren"></div>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <div id="footer"></div>
+
+  <!-- تحميل الهيدر -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header").innerHTML = html;
+        const scripts = document.getElementById("header").querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- تحميل الفوتر -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        const footerContainer = document.getElementById("footer");
+        footerContainer.innerHTML = data;
+        const scriptTags = footerContainer.querySelectorAll("script");
+        scriptTags.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // تحميل النتائج من sessionStorage
+    const results = JSON.parse(sessionStorage.getItem("matchResults") || "[]");
+
+    if (results.length === 0) {
+      document.getElementById('topChild').innerHTML = `
+        <div class="empty-state">
+          <p>لا توجد نتائج متاحة. يرجى العودة لصفحة المطابقة.</p>
+          <a href="matching.html" class="btn">العودة للمطابقة</a>
+        </div>
+      `;
+    } else {
+      // جلب بيانات الأطفال من Firebase (للحصول على الصور)
+      onValue(ref(db, "children"), (snapshot) => {
+        const childrenData = snapshot.val();
+        
+        if (!childrenData) {
+          console.error("لا توجد بيانات أطفال في Firebase");
+          return;
+        }
+
+        // دمج النتائج مع الصور من Firebase
+        const childrenArray = Object.entries(childrenData).map(([id, child]) => ({
+          id,
+          ...child
+        }));
+
+        // ربط النتائج بالصور
+        const resultsWithImages = results.map(result => {
+          const child = childrenArray.find(c => c.name === result.name);
+          return {
+            ...result,
+            img: child ? child.img : null
+          };
+        });
+
+        // عرض أفضل طفل
+        const topKid = resultsWithImages[0];
+        const similarity = parseFloat(topKid.similarity);
+        let bgColor = '#4caf50';
+        if (similarity < 60) bgColor = '#ff9800';
+        if (similarity < 40) bgColor = '#f44336';
+
+        document.getElementById('topChild').innerHTML = `
+          <h3>أفضل تطابق</h3>
+          ${topKid.img ? `<img src="${topKid.img}" alt="${topKid.name}">` : `<div style="width:180px;height:180px;background:#ddd;border-radius:15px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;color:#666;">لا توجد صورة</div>`}
+          <h3>${topKid.name}</h3>
+          <p>${topKid.age} سنة - ${topKid.gender}</p>
+          <div class="percent" style="background: ${bgColor};">
+            نسبة التطابق: ${topKid.similarity}%
+          </div>
+          <br>
+          <a href="adoption-request.html?name=${encodeURIComponent(topKid.name)}&age=${topKid.age}&gender=${encodeURIComponent(topKid.gender)}&similarity=${topKid.similarity}" class="btn">
+            طلب احتضان هذا الطفل
+          </a>
+        `;
+
+        // عرض باقي الأطفال
+        const otherKids = resultsWithImages.slice(1);
+        if (otherKids.length > 0) {
+          document.getElementById('otherChildren').innerHTML = otherKids.map(kid => {
+            const sim = parseFloat(kid.similarity);
+            let bg = '#4caf50';
+            if (sim < 60) bg = '#ff9800';
+            if (sim < 40) bg = '#f44336';
+
+            return `
+              <div class="child-card">
+                ${kid.img ? `<img src="${kid.img}" alt="${kid.name}">` : `<div style="width:100%;height:150px;background:#ddd;border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;color:#666;">لا توجد صورة</div>`}
+                <h4>${kid.name}</h4>
+                <p>${kid.age} سنة - ${kid.gender}</p>
+                <div class="percent" style="background: ${bg};">
+                  ${kid.similarity}%
+                </div>
+                <br>
+                <a href="adoption-request.html?name=${encodeURIComponent(kid.name)}&age=${kid.age}&gender=${encodeURIComponent(kid.gender)}&similarity=${kid.similarity}" class="btn">
+                  طلب احتضان
+                </a>
+              </div>
+            `;
+          }).join('');
+        } else {
+          document.getElementById('otherChildren').innerHTML = `
+            <div class="empty-state">
+              <p>لا توجد نتائج إضافية</p>
+            </div>
+          `;
+        }
+      });
+    }
+  </script>
+</body>
+</html>

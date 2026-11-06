@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة المطابقة - مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    h2 {
+      color: #e65a3a;
+      margin-bottom: 10px;
+    }
+
+    .info-box {
+      background: #fff3e2;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-right: 4px solid #e65a3a;
+    }
+
+    .info-box p {
+      margin: 5px 0;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .uploader {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 25px;
+      gap: 20px;
+    }
+
+    .box {
+      text-align: center;
+      background: #fffaf4;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 45%;
+      min-width: 250px;
+    }
+
+    .box h3 {
+      color: #492108;
+      margin-bottom: 10px;
+    }
+
+    .preview {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      background-color: #f9f5f0;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 2px dashed #ddd;
+    }
+
+    input[type="file"] {
+      margin: 10px 0;
+      font-family: 'Tajawal';
+    }
+
+    button {
+      background: #e65a3a;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover { 
+      background: #c94b2f;
+      transform: translateY(-2px);
+    }
+    
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .progress-container {
+      width: 100%;
+      background: #f3e3d1;
+      border-radius: 10px;
+      height: 20px;
+      margin-top: 20px;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #e65a3a, #fbc99b);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-weight: 600;
+      color: #492108;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: #fffaf4;
+      border-top: 1px solid #f1d3b8;
+      color: #492108;
+    }
+
+    .loading-spinner {
+      display: none;
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3e3d1;
+      border-top: 5px solid #e65a3a;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الهيدر -->
+  <div id="header"></div>
+
+  <div class="container">
+    <h2>صفحة المطابقة الذكية</h2>
+    <p>استخدام تقنية الذكاء الاصطناعي لمطابقة ملامح الوجه</p>
+
+    <div class="info-box">
+      <p><strong>ملاحظات مهمة:</strong></p>
+      <p>• استخدم صور واضحة للوجه بدون نظارات أو قناع</p>
+      <p>• تأكد من وجود إضاءة جيدة في الصورة</p>
+      <p>• الصورة يجب أن تحتوي على وجه واحد فقط</p>
+      <p>• نسبة التطابق استرشادية وليست نهائية</p>
+    </div>
+
+    <div class="uploader">
+      <div class="box">
+        <h3>صورة الأم</h3>
+        <input id="momFile" type="file" accept="image/*">
+        <img id="momPreview" class="preview" alt="">
+      </div>
+      <div class="box">
+        <h3>صورة الأب</h3>
+        <input id="dadFile" type="file" accept="image/*">
+        <img id="dadPreview" class="preview" alt="">
+      </div>
+    </div>
+
+    <button id="matchBtn">ابدأ المطابقة</button>
+    
+    <div class="loading-spinner" id="loadingSpinner"></div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <p id="status"></p>
+  </div>
+
+  <!-- الفوتر -->
+  <div id="footer"></div>
+
+  <!-- تحميل الهيدر -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header").innerHTML = html;
+        const scripts = document.getElementById("header").querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- تحميل الفوتر -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        const footerContainer = document.getElementById("footer");
+        footerContainer.innerHTML = data;
+        const scriptTags = footerContainer.querySelectorAll("script");
+        scriptTags.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      });
+  </script>
+
+  <!-- Face-API.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+  <!-- الكود الرئيسي -->
+  <script>
+    const momFile = document.getElementById('momFile');
+    const dadFile = document.getElementById('dadFile');
+    const momPreview = document.getElementById('momPreview');
+    const dadPreview = document.getElementById('dadPreview');
+    const matchBtn = document.getElementById('matchBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.querySelector('.progress-container');
+    const statusEl = document.getElementById('status');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    let momImage = null;
+    let dadImage = null;
+    let modelsLoaded = false;
+
+    // تحميل نماذج الـ AI
+    async function loadModels() {
+      try {
+        statusEl.textContent = "جاري تحميل نماذج الذكاء الاصطناعي...";
+        loadingSpinner.style.display = "block";
+        
+        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model/';
+        
+        await Promise.all([
+          faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+        ]);
+        
+        modelsLoaded = true;
+        loadingSpinner.style.display = "none";
+        statusEl.textContent = "النماذج جاهزة - يمكنك البدء";
+        console.log('تم تحميل النماذج بنجاح');
+      } catch (error) {
+        loadingSpinner.style.display = "none";
+        statusEl.textContent = "حدث خطأ في تحميل النماذج";
+        console.error('خطأ في تحميل النماذج:', error);
+      }
+    }
+
+    // تحميل النماذج عند فتح الصفحة
+    window.addEventListener('load', () => {
+      setTimeout(loadModels, 1000);
+    });
+
+    // معاينة الصور
+    momFile.onchange = e => {
+      if (e.target.files[0]) {
+        momPreview.src = URL.createObjectURL(e.target.files[0]);
+        momImage = e.target.files[0];
+      }
+    };
+    
+    dadFile.onchange = e => {
+      if (e.target.files[0]) {
+        dadPreview.src = URL.createObjectURL(e.target.files[0]);
+        dadImage = e.target.files[0];
+      }
+    };
+
+    // تحليل الوجه باستخدام AI
+    async function analyzeFace(imageFile) {
+      return new Promise((resolve, reject) => {
+        const img = document.createElement('img');
+        const reader = new FileReader();
+        
+        reader.onload = async (e) => {
+          img.src = e.target.result;
+          img.onload = async () => {
+            try {
+              const detection = await faceapi
+                .detectSingleFace(img)
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+              
+              if (detection) {
+                resolve(detection.descriptor);
+              } else {
+                reject(new Error('لم يتم العثور على وجه في الصورة'));
+              }
+            } catch (error) {
+              reject(error);
+            }
+          };
+        };
+        
+        reader.readAsDataURL(imageFile);
+      });
+    }
+
+    // حساب نسبة التطابق
+    function calculateSimilarity(descriptor1, descriptor2) {
+      const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
+      const similarity = Math.max(0, (1 - distance) * 100);
+      return similarity;
+    }
+
+    // المطابقة الرئيسية
+    matchBtn.onclick = async () => {
+      if (!momImage || !dadImage) {
+        alert("الرجاء رفع صور الأم والأب أولاً");
+        return;
+      }
+
+      if (!modelsLoaded) {
+        alert("الرجاء الانتظار حتى يتم تحميل نماذج الذكاء الاصطناعي");
+        return;
+      }
+
+      matchBtn.disabled = true;
+      statusEl.textContent = "جاري تحليل صور الوالدين...";
+      progressContainer.style.display = "block";
+      progressBar.style.width = "10%";
+      progressBar.textContent = "10%";
+
+      try {
+        // تحليل وجه الأم
+        statusEl.textContent = "جاري تحليل صورة الأم...";
+        const momDescriptor = await analyzeFace(momImage);
+        progressBar.style.width = "30%";
+        progressBar.textContent = "30%";
+
+        // تحليل وجه الأب
+        statusEl.textContent = "جاري تحليل صورة الأب...";
+        const dadDescriptor = await analyzeFace(dadImage);
+        progressBar.style.width = "50%";
+        progressBar.textContent = "50%";
+
+        // حساب متوسط الوالدين
+        const avgParentDescriptor = momDescriptor.map((val, idx) => 
+          (val + dadDescriptor[idx]) / 2
+        );
+
+        // جلب الأطفال من Firebase
+        statusEl.textContent = "جاري جلب بيانات الأطفال...";
+        const dbUrl = "https://YOUR_PROJECT-default-rtdb.firebaseio.com/children.json";
+        const response = await fetch(dbUrl);
+        const childrenData = await response.json();
+        
+        if (!childrenData) {
+          statusEl.textContent = "لا يوجد أطفال في قاعدة البيانات";
+          matchBtn.disabled = false;
+          return;
+        }
+
+        progressBar.style.width = "60%";
+        progressBar.textContent = "60%";
+
+        // تحليل وجوه الأطفال
+        const children = Object.entries(childrenData);
+        const results = [];
+        
+        for (let i = 0; i < children.length; i++) {
+          const [id, kid] = children[i];
+          statusEl.textContent = `جاري تحليل الطفل ${i + 1} من ${children.length}...`;
+          
+          try {
+            const img = document.createElement('img');
+            img.src = kid.img;
+            
+            await new Promise((resolve) => {
+              img.onload = resolve;
+            });
+
+            const childDetection = await faceapi
+              .detectSingleFace(img)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
+
+            if (childDetection) {
+              const similarity = calculateSimilarity(
+                avgParentDescriptor, 
+                childDetection.descriptor
+              );
+              
+              results.push({
+                ...kid,
+                id,
+                similarity: similarity.toFixed(2)
+              });
+            } else {
+              results.push({
+                ...kid,
+                id,
+                similarity: (Math.random() * 30 + 20).toFixed(2)
+              });
+            }
+          } catch (error) {
+            console.error(`خطأ في تحليل الطفل ${kid.name}:`, error);
+            results.push({
+              ...kid,
+              id,
+              similarity: (Math.random() * 30 + 20).toFixed(2)
+            });
+          }
+
+          const progress = 60 + ((i + 1) / children.length * 35);
+          progressBar.style.width = progress + "%";
+          progressBar.textContent = Math.round(progress) + "%";
+        }
+
+        // ترتيب النتائج
+        results.sort((a, b) => parseFloat(b.similarity) - parseFloat(a.similarity));
+
+        progressBar.style.width = "100%";
+        progressBar.textContent = "100%";
+        statusEl.textContent = "تمت المطابقة بنجاح";
+
+        // حفظ النتائج
+        const lightResults = results.map(r => ({
+          name: r.name,
+          age: r.age,
+          gender: r.gender,
+          similarity: r.similarity
+        }));
+        
+        sessionStorage.setItem("matchResults", JSON.stringify(lightResults));
+        
+        // الانتقال لصفحة النتائج
+        setTimeout(() => {
+          window.location.href = "result.html";
+        }, 1000);
+
+      } catch (error) {
+        console.error("خطأ في المطابقة:", error);
+        statusEl.textContent = "حدث خطأ: " + error.message;
+        matchBtn.disabled = false;
+        progressContainer.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>

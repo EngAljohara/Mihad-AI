@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>إدارة الطلبات والأطفال | مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* اللوجو */
+    .logo {
+      text-align: left;
+      padding: 20px 30px 10px;
+    }
+    .logo img {
+      height: 90px;
+      display: block;
+    }
+
+    /* الشريط */
+    nav {
+      background-color: #fbc99b;
+      padding: 15px 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    nav a {
+      background-color: #ffebd3c1;
+      color: #492108;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+      background-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    /* المحتوى */
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #e65a3a;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .tab-btn:hover {
+      background: #c94b2f;
+      transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+      background: #492108;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-box {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #e65a3a;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    /* جدول الطلبات */
+    .requests-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .request-card {
+      background: #fffaf4;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border-right: 4px solid #e65a3a;
+    }
+
+    .request-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .request-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .request-info {
+      line-height: 1.8;
+    }
+
+    .request-info strong {
+      color: #492108;
+    }
+
+    .status-badge {
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-pending {
+      background: #ffc107;
+      color: #492108;
+    }
+
+    .status-approved {
+      background: #28a745;
+      color: white;
+    }
+
+    .status-rejected {
+      background: #dc3545;
+      color: white;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-approve {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-approve:hover {
+      background: #218838;
+    }
+
+    .btn-reject {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-reject:hover {
+      background: #c82333;
+    }
+
+    .btn-view {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .btn-view:hover {
+      background: #138496;
+    }
+
+    /* قائمة الأطفال */
+    .children-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .child-card {
+      background: #fffaf4;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .child-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .child-card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .child-info {
+      margin: 10px 0;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8b4a24;
+    }
+
+    .empty-state i {
+      font-size: 60px;
+      color: #e65a3a;
+      margin-bottom: 20px;
+    }
+
+    /* إحصائيات */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-box {
+      background: linear-gradient(135deg, #e65a3a, #c94b2f);
+      color: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: scale(1.05);
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: #fffaf4;
+      color: #492108;
+      border-top: 1px solid #f1d3b8;
+    }
+
+    footer a {
+      color: #e65a3a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .children-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+      
+      .tabs {
+        flex-direction: column;
+      }
+      
+      .tab-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- اللوجو -->
+  <div class="logo">
+    <img src="logo.svg" alt="شعار مهاد">
+  </div>
+
+  <!-- الشريط -->
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="children.html">الأطفال المسجّلون</a>
+    <a href="matching.html">صفحة المطابقة</a>
+    <a href="management.html" class="active">إدارة النظام</a>
+    <a href="admin.html">لوحة المؤسسة</a>
+  </nav>
+
+  <!-- المحتوى -->
+  <div class="container">
+    <!-- الإحصائيات -->
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-number" id="totalRequests">0</div>
+        <div class="stat-label">إجمالي الطلبات</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="pendingRequests">0</div>
+        <div class="stat-label">طلبات قيد المراجعة</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="totalChildren">0</div>
+        <div class="stat-label">إجمالي الأطفال</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="approvedRequests">0</div>
+        <div class="stat-label">طلبات معتمدة</div>
+      </div>
+    </div>
+
+    <!-- التابات -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('requests')">طلبات الاحتضان</button>
+      <button class="tab-btn" onclick="switchTab('children')">إدارة الأطفال</button>
+    </div>
+
+    <!-- تاب طلبات الاحتضان -->
+    <div id="requests-tab" class="tab-content active">
+      <div class="section-box">
+        <h2>طلبات الاحتضان</h2>
+        <div id="requestsList" class="requests-grid">
+          <div class="empty-state">
+            <div>📋</div>
+            <p>جاري تحميل الطلبات...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- تاب إدارة الأطفال -->
+    <div id="children-tab" class="tab-content">
+      <div class="section-box">
+        <h2>إدارة الأطفال المسجلين</h2>
+        <div id="childrenList" class="children-grid">
+          <div class="empty-state">
+            <div>👶</div>
+            <p>جاري تحميل الأطفال...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© جميع الحقوق محفوظة لمهاد</p>
+    <a href="mailto:MihadHRSD.sa@gmail.com">MihadHRSD.sa@gmail.com</a> |
+    <a href="tel:+966567009818">+966567009818</a>
+  </footer>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/4f7ce85877.js" crossorigin="anonymous"></script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // التبديل بين التابات
+    window.switchTab = function(tab) {
+      // إخفاء كل التابات
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      // إظهار التاب المطلوب
+      document.getElementById(tab + '-tab').classList.add('active');
+      event.target.classList.add('active');
+    };
+
+    // تحميل الطلبات
+    function loadRequests() {
+      const requestsListEl = document.getElementById('requestsList');
+      
+      onValue(ref(db, "requests"), (snapshot) => {
+        const data = snapshot.val();
+        
+        if (!data) {
+          requestsListEl.innerHTML = `
+            <div class="empty-state">
+              <div>📋</div>
+              <p>لا توجد طلبات احتضان حالياً</p>
+            </div>
+          `;
+          updateStats(0, 0, 0);
+          return;
+        }
+
+        const requests = Object.entries(data);
+        const pending = requests.filter(([_, r]) => r.status === 'pending').length;
+        const approved = requests.filter(([_, r]) => r.status === 'approved').length;
+        updateStats(requests.length, pending, approved);
+
+        requestsListEl.innerHTML = requests.map(([id, req]) => `
+          <div class="request-card">
+            <div class="request-header">
+              <strong>${req.childName}</strong>
+              <span class="status-badge status-${req.status}">
+                ${req.status === 'pending' ? 'قيد المراجعة' : req.status === 'approved' ? 'معتمد' : 'مرفوض'}
+              </span>
+            </div>
+            <div class="request-info">
+              <p><strong>اسم الوالدين:</strong> ${req.parentNames || 'غير متوفر'}</p>
+              <p><strong>نسبة التطابق:</strong> ${req.similarity}%</p>
+              <p><strong>تاريخ الطلب:</strong> ${new Date(req.createdAt).toLocaleString('ar-SA')}</p>
+              ${req.notes ? `<p><strong>ملاحظات:</strong> ${req.notes}</p>` : ''}
+            </div>
+            <div class="action-buttons">
+              ${req.status === 'pending' ? `
+                <button class="btn btn-approve" onclick="updateRequestStatus('${id}', 'approved')">
+                  ✅ قبول
+                </button>
+                <button class="btn btn-reject" onclick="updateRequestStatus('${id}', 'rejected')">
+                  ❌ رفض
+                </button>
+              ` : ''}
+              <button class="btn btn-view" onclick="viewRequest('${id}')">
+                👁️ عرض التفاصيل
+              </button>
+            </div>
+          </div>
+        `).join('');
+      });
+    }
+
+    // تحديث حالة الطلب
+    window.updateRequestStatus = async function(requestId, status) {
+      if (confirm(`هل أنت متأكد من ${status === 'approved' ? 'قبول' : 'رفض'} هذا الطلب؟`)) {
+        try {
+          await update(ref(db, `requests/${requestId}`), {
+            status,
+            updatedAt: new Date().toISOString()
+          });
+          alert(`✅ تم ${status === 'approved' ? 'قبول' : 'رفض'} الطلب بنجاح`);
+        } catch (error) {
+          alert('حدث خطأ: ' + error.message);
+        }
+      }
+    };
+
+    // عرض تفاصيل الطلب
+    window.viewRequest = function(requestId) {
+      alert('سيتم فتح صفحة تفاصيل الطلب قريباً');
+      // يمكن إضافة modal أو صفحة منفصلة
+    };
+
+    // تحميل الأطفال
+    function loadChildren() {
+      const childrenListEl = document.getElementById('childrenList');
+      
+      onValue(ref(db, "children"), (snapshot) => {
+        const data = snapshot.val();
+        
+        if (!data) {
+          childrenListEl.innerHTML = `
+            <div class="empty-state">
+              <div>👶</div>
+              <p>لم يتم إضافة أي طفل بعد</p>
+            </div>
+          `;
+          document.getElementById('totalChildren').textContent = '0';
+          return;
+        }
+
+        const children = Object.entries(data);
+        document.getElementById('totalChildren').textContent = children.length;
+
+        childrenListEl.innerHTML = children.map(([id, child]) => `
+          <div class="child-card">
+            <img src="${child.img}" alt="${child.name}">
+            <div class="child-info">
+              <strong>${child.name}</strong><br>
+              <small>العمر: ${child.age} سنوات</small><br>
+              <small>${child.gender}</small>
+            </div>
+            <button class="btn btn-delete" onclick="deleteChild('${id}', '${child.name}')">
+              🗑️ حذف
+            </button>
+          </div>
+        `).join('');
+      });
+    }
+
+    // حذف طفل
+    window.deleteChild = async function(childId, childName) {
+      if (confirm(`هل أنت متأكد من حذف الطفل "${childName}"؟`)) {
+        try {
+          await remove(ref(db, `children/${childId}`));
+          alert('✅ تم حذف الطفل بنجاح');
+        } catch (error) {
+          alert('حدث خطأ: ' + error.message);
+        }
+      }
+    };
+
+    // تحديث الإحصائيات
+    function updateStats(total, pending, approved) {
+      document.getElementById('totalRequests').textContent = total;
+      document.getElementById('pendingRequests').textContent = pending;
+      document.getElementById('approvedRequests').textContent = approved;
+    }
+
+    // تحميل البيانات عند فتح الصفحة
+    loadRequests();
+    loadChildren();
+  </script>
+</body>
+</html>

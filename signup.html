@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>مهاد | إنشاء حساب جديد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --brand:#e65a3a; --brand-dark:#c94b2f; --ink:#492108; --muted:#7a5e42;
+      --bg1:#fff3e7; --bg2:#ffe9d6; --card:#fff; --radius:25px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:'Tajawal',sans-serif; color:var(--ink);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+      padding:24px;
+    }
+    .signup-card{
+      width:100%; max-width:520px; background:var(--card); border-radius:var(--radius);
+      box-shadow:0 15px 35px rgba(0,0,0,.12); padding:32px 28px;
+    }
+    h1{margin:0 0 8px; color:var(--brand); font-size:24px}
+    .subtitle{margin:0 0 22px; color:var(--muted); font-size:15px}
+    .progress{text-align:center; color:var(--muted); font-size:13px; margin-bottom:10px}
+    .question{display:none; animation:fade .25s ease}
+    .question.active{display:block}
+    @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+    label{display:block; margin:0 0 6px; font-weight:600}
+    input,select{
+      width:100%; padding:12px; margin-bottom:14px; border:1px solid #ddd;
+      border-radius:10px; font-size:15px; outline:none;
+    }
+    input:focus,select:focus{border-color:var(--brand)}
+    .note{font-size:13px; color:#7a5e42; margin-top:-8px; margin-bottom:12px}
+    .nav{display:flex; justify-content:space-between; gap:10px; margin-top:6px}
+    .nav button{
+      flex:1; border:none; background:var(--brand); color:#fff; padding:11px 12px;
+      border-radius:10px; font-weight:700; cursor:pointer; transition:.25s; font-size:15px;
+    }
+    .nav .secondary{background:#f3e0cf; color:var(--ink)}
+    .nav button:hover{background:var(--brand-dark)}
+    .nav .secondary:hover{background:#e9cfb7}
+    .popup{position:fixed; inset:0; background:rgba(0,0,0,.45);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; visibility:hidden; transition:.3s ease; padding:20px;}
+    .popup.active{opacity:1; visibility:visible}
+    .popup-card{width:100%; max-width:520px; background:#fff; border-radius:20px;
+      padding:24px 22px; box-shadow:0 20px 40px rgba(0,0,0,.22); text-align:justify;}
+    .popup-card h3{color:var(--brand); margin:0 0 8px; text-align:center}
+    .popup-card p{margin:0 0 10px; color:var(--ink); line-height:1.8}
+    .actions{display:flex; gap:10px; margin-top:14px}
+    .actions a{
+      flex:1; text-align:center; border:none; border-radius:10px;
+      padding:11px 12px; cursor:pointer; font-weight:700; text-decoration:none;
+    }
+    .primary{background:var(--brand); color:#fff}
+    .primary:hover{background:var(--brand-dark)}
+    .ghost{background:#f3e0cf; color:var(--ink)}
+    .ghost:hover{background:#e9cfb7}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+
+  <div class="signup-card">
+    <h1>إنشاء حساب جديد</h1>
+    <p class="subtitle">أجب عن الأسئلة التالية لقياس الجاهزية للاحتضان. يمكن تعديل إجاباتك لاحقًا من ملفك الشخصي.</p>
+
+    <div id="progress" class="progress">الخطوة 1 من 7</div>
+
+    <div id="questions">
+      <div class="question active" data-step="0">
+        <label>الاسم الكامل</label>
+        <input type="text" id="name" placeholder="الاسم الكامل" required>
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="example@mail.com" required>
+        <label>كلمة المرور</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+
+      <div class="question" data-step="1">
+        <label>المدينة / المنطقة</label>
+        <input type="text" id="city" placeholder="مثال: الرياض" required>
+      </div>
+
+      <div class="question" data-step="2">
+        <label>العمر</label>
+        <input type="number" id="age" placeholder="بين 25 و 50">
+      </div>
+
+      <div class="question" data-step="3">
+        <label>الجنسية</label>
+        <select id="nationality">
+          <option value="">اختر الجنسية</option>
+          <option value="سعودية">سعودية</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+      </div>
+
+      <div class="question" data-step="4">
+        <label>هل الأم تتناول حبوب مدرة للحليب؟</label>
+        <select id="milkPills">
+          <option value="">اختر</option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+      </div>
+
+      <div class="question" data-step="5">
+        <label>هل قمت بإجراء اختبار للصحة النفسية؟</label>
+        <select id="mentalTest">
+          <option value="">اختر</option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <div class="note">مهم: سيتم مراجعة نتيجة الاختبار من قِبل المختصين قبل قبول الطلب.</div>
+        <div id="uploadSection" class="hidden" style="margin-top:10px;">
+          <input type="file" id="mentalFile" accept=".pdf,.jpg,.png" />
+        </div>
+      </div>
+
+      <div class="question" data-step="6">
+        <label>هل لديك أطفال؟</label>
+        <select id="children">
+          <option value="">اختر</option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <div id="childCountSection" class="hidden" style="margin-top:10px;">
+          <input type="number" id="childCount" placeholder="عدد الأطفال">
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button id="prevBtn" class="secondary">السابق</button>
+      <button id="nextBtn" class="primary">التالي</button>
+    </div>
+  </div>
+
+  <div id="resultPopup" class="popup">
+    <div class="popup-card" id="resultCard"></div>
+  </div>
+
+  <script>
+    const stepsEls = [...document.querySelectorAll(".question")];
+    const progressEl = document.getElementById("progress");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const uploadSection = document.getElementById("uploadSection");
+    const mentalTestEl = document.getElementById("mentalTest");
+    const childrenEl = document.getElementById("children");
+    const childCountSection = document.getElementById("childCountSection");
+
+    let step = 0;
+    const lastStep = stepsEls.length - 1;
+
+    mentalTestEl.addEventListener("change", e => {
+      uploadSection.classList.toggle("hidden", e.target.value !== "نعم");
+    });
+    childrenEl.addEventListener("change", e => {
+      childCountSection.classList.toggle("hidden", e.target.value !== "نعم");
+    });
+
+    function showStep(i){
+      stepsEls.forEach(s => s.classList.remove("active"));
+      stepsEls[i].classList.add("active");
+      progressEl.textContent = `الخطوة ${i + 1} من ${stepsEls.length}`;
+      prevBtn.style.visibility = i === 0 ? "hidden" : "visible";
+      nextBtn.textContent = i === lastStep ? "إنهاء" : "التالي";
+    }
+
+    function next(){ 
+      if(step < lastStep){ step++; showStep(step);} 
+      else { showSuccessPopup(); } 
+    }
+    function prev(){ if(step>0){ step--; showStep(step);} }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+
+    function showSuccessPopup(){
+      const popup = document.getElementById("resultPopup");
+      const card = document.getElementById("resultCard");
+      card.innerHTML = `
+        <h3>تهانينا من القلب</h3>
+        <p>نشكر لك رغبتك الصادقة والكريمة في الاحتضان، ونود إخبارك بأن جميع الشروط اللازمة لاستحقاقك للمبادرة قد تم استيفاؤها بنجاح.</p>
+        <p>خطوة الاحتضان ليست مجرد إجراء، بل هي رسالة عطاء وإنسانية عظيمة، ونحن نقدر تضحياتك ورغبتك في منح طفل محتاج فرصة لحياة أفضل مليئة بالحب والأمان.</p>
+        <p>فريق <strong>مهاد</strong> يرحب بك بحرارة، ونتمنى لك رحلة موفقة في مرحلة المطابقة القادمة، حيث ستتاح لك الفرصة لتغيير حياة طفل بطريقة حقيقية وجميلة.</p>
+        <p>تذكر أن كل خطوة تقوم بها اليوم، كل إجابة، وكل اهتمام منك، لها أثر كبير في حياة من يحتاجون العطاء والمودة. نحن فخورون بك وبدافعك الإنساني العظيم.</p>
+        <div class="actions">
+          <a class="primary" href="matching.html">بدء عملية المطابقة</a>
+        </div>`;
+      popup.classList.add("active");
+    }
+
+    showStep(step);
+  </script>
+  <script type="module">
+import { auth, firestore } from "./firebase.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+document.getElementById("nextBtn").addEventListener("click", async () => {
+  
+  if (nextBtn.textContent !== "إنهاء") return; // لا نسجل إلا في آخر خطوة
+
+  // البيانات
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const nationality = document.getElementById("nationality").value;
+  const milkPills = document.getElementById("milkPills").value;
+  const mentalTest = document.getElementById("mentalTest").value;
+  const children = document.getElementById("children").value;
+  const childCount = document.getElementById("childCount").value || 0;
+
+  try {
+    // إنشاء حساب المستخدم
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
+
+    // حفظ البيانات في Firestore
+    await setDoc(doc(firestore, "users", uid), {
+      name, email, city, age, nationality, milkPills, mentalTest, children, childCount
+    });
+
+    // تحويل المستخدم لصفحة المطابقة
+    window.location.href = "matching.html";
+  }); 
+</script>
+
+</body>
+</html>

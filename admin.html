@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>لوحة المؤسسة – مهاد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+    }
+
+    /* اللوجو */
+    .logo {
+      text-align: left;
+      padding: 20px 30px 10px;
+    }
+    .logo img {
+      height: 90px;
+      display: block;
+    }
+
+    /* الشريط الموحد */
+    nav {
+      background-color: #fbc99b;
+      padding: 15px 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    nav a {
+      background-color: #ffebd3c1;
+      color: #492108;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    /* المحتوى */
+    main {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 4px 4px 14px rgba(0,0,0,0.15);
+      padding: 30px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #e65a3a;
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+
+    .welcome {
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .kpi {
+      background: #fffaf4;
+      border-radius: 16px;
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .kpi:hover {
+      transform: scale(1.02);
+      box-shadow: inset 3px 3px 8px rgba(0,0,0,0.12);
+    }
+
+    .kpi-title {
+      color: #492108;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .num {
+      font-size: 26px;
+      font-weight: 700;
+      color: #e65a3a;
+    }
+
+    .btn {
+      background: #e65a3a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 22px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+      transition: 0.3s;
+      margin: 8px;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #c94b2f;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 10px;
+      margin-top: 40px;
+      background: #fffaf4;
+      border-top: 1px solid #f1d3b8;
+      font-size: 14px;
+      color: #492108;
+    }
+
+    footer a {
+      margin: 0 10px;
+      color: #e65a3a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- اللوجو -->
+  <div class="logo">
+    <img src="logo.svg" alt="شعار مهاد">
+  </div>
+
+  <!-- الشريط -->
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="children.html">الأطفال المسجّلون</a>
+    <a href="matching.html">صفحة المطابقة</a>
+    <a href="#" onclick="logout()">تسجيل الخروج</a>
+  </nav>
+
+  <!-- المحتوى -->
+  <main>
+    <div class="card">
+      <h1>لوحة المؤسسة – مهاد</h1>
+      <div class="welcome">
+        مرحبًا بك في لوحة مؤسسة <strong>مهاد</strong>.<br>
+        من هنا يمكنك إدارة بيانات الأطفال المسجّلين، متابعة آخر التحديثات، وبدء عملية المطابقة بسهولة ودقّة.
+      </div>
+
+      <div class="grid">
+        <div class="kpi">
+          <div class="kpi-title">عدد الأطفال المسجّلين</div>
+          <div class="num" id="kidsCount">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-title">تاريخ آخر إضافة</div>
+          <div class="num" id="lastAdded">—</div>
+        </div>
+      </div>
+
+      <div style="margin-top:25px;">
+        <a class="btn" href="children.html">إدارة الأطفال</a>
+        <a class="btn" href="matching.html">بدء المطابقة الآن</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- الفوتر -->
+  <footer>
+    <p>© جميع الحقوق محفوظة لمهاد</p>
+    <a href="#">الأسئلة الشائعة</a> |
+    <a href="mailto:MihadHRSD.sa@gmail.com">MihadHRSD.sa@gmail.com</a> |
+    <a href="tel:+966567009818">+966567009818</a>
+  </footer>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID",
+      measurementId: "YOUR_MEASUREMENT_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const kidsCountEl = document.getElementById('kidsCount');
+    const lastAddedEl = document.getElementById('lastAdded');
+
+    onValue(ref(db, "children"), (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        kidsCountEl.textContent = "0";
+        lastAddedEl.textContent = "—";
+        return;
+      }
+
+      const kids = Object.entries(data);
+      kidsCountEl.textContent = kids.length;
+
+      const last = kids[kids.length - 1][1];
+      const date = new Date(last.addedAt);
+      lastAddedEl.textContent = date.toLocaleString('ar-SA', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    });
+
+    if (sessionStorage.getItem('orgAuthed') !== '1') {
+      alert('الرجاء تسجيل الدخول أولاً.');
+      window.location.href = 'index.html';
+    }
+
+    window.logout = function() {
+      sessionStorage.removeItem('orgAuthed');
+      window.location.href = 'index.html';
+    };
+  </script>
+</body>
+</html>

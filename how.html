@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مهاد | كيف يعمل مهاد</title>
+
+  <!-- الخطوط والستايل -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fffaf4;
+      color: #492108;
+      overflow-x: hidden;
+    }
+
+    /* شاشة التحميل */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #fffaf4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #loader img {
+      width: 120px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* الصفحات */
+    .page {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      display: none;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-box {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+      padding: 40px;
+      line-height: 1.8;
+    }
+    .section-title {
+      color: #e65a3a;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    .section-box ol {
+      text-align: right;
+      padding-right: 30px;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+    .section-box ol li {
+      margin-bottom: 20px;
+    }
+    .section-box ol li span.subtext {
+      display: block;
+      font-size: 16px; /* أصغر حجم للشرح */
+      margin-top: 5px;
+      font-weight: 400;
+      color: #492108;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- شاشة التحميل -->
+  <div id="loader">
+    <img src="intrac.svg" alt="جاري التحميل..." />
+  </div>
+
+  <!-- الهيدر (يتحمّل من ملف خارجي) -->
+  <div id="header"></div>
+
+  <!-- الصفحة: كيف يعمل مهاد -->
+  <div id="how" class="page active">
+    <div class="section-box">
+      <h1 class="section-title">كيف يعمل مهاد</h1>
+      <ol>
+        <li>
+          <strong>إنشاء حسابك بأمان:</strong>
+          <span class="subtext">يمكن إنشاء الحساب وربطه بالجهات الرسمية لضمان مصداقية البيانات.</span>
+        </li>
+        <li>
+          <strong>إضافة البيانات الأساسية:</strong>
+          <span class="subtext">أدخل معلوماتك الأساسية وبيانات الأطفال لتسهيل عملية المطابقة بدقة عالية.</span>
+        </li>
+        <li>
+          <strong>رفع الصور بطريقة آمنة: </strong> -خاص للمؤسسات-
+          <span class="subtext">يمكن رفع صور الأطفال والوالدين بأمان، مع الحفاظ على سرية البيانات وحمايتها من أي استخدام غير مصرح.</span>
+        </li>
+        <li>
+          <strong>تحليل ملامح الوجه الذكي:</strong>
+          <span class="subtext">يستخدم مهاد تقنيات الذكاء الاصطناعي لمقارنة الملامح بدقة، لضمان أعلى نسبة تطابق ممكنة.</span>
+        </li>
+        <li>
+          <strong>عرض النتائج ومتابعة الإجراءات:</strong>
+          <span class="subtext">بعد المطابقة، يتم عرض النتائج بوضوح، مع إمكانية متابعة الإجراءات القانونية والتواصل مع المؤسسات المعنية.</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <div id="footer"></div>
+
+  <!-- مكتبة الأيقونات -->
+  <script src="https://kit.fontawesome.com/4f7ce85877.js" crossorigin="anonymous"></script>
+
+  <!-- تحميل الهيدر -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header").innerHTML = html;
+        const script = document.getElementById("header").querySelector("script");
+        if (script) eval(script.textContent);
+      });
+  </script>
+
+  <!-- تحميل الفوتر -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer").innerHTML = data;
+
+        // تفعيل الأكورديون
+        document.querySelectorAll('.accordion-item')?.forEach(item => {
+          item.querySelector('.accordion-header')?.addEventListener('click', () => {
+            item.classList.toggle('active');
+          });
+        });
+      });
+  </script>
+
+  <!-- التنقل بين الصفحات -->
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const nextPage = document.getElementById(id);
+      if (nextPage) {
+        document.getElementById('loader').style.display = 'flex';
+        setTimeout(() => {
+          document.getElementById('loader').style.display = 'none';
+          nextPage.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 1500);
+      }
+    }
+
+    // إخفاء اللودر عند تحميل الصفحة أول مرة
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').style.display = 'none', 1500);
+    });
+  </script>
+</body>
+</html>
